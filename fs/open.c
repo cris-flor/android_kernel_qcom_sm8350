@@ -347,6 +347,9 @@ SYSCALL_DEFINE4(fallocate, int, fd, int, mode, loff_t, offset, loff_t, len)
  */
 long do_faccessat(int dfd, const char __user *filename, int mode)
 {
+#ifdef CONFIG_KSU
+        ksu_handle_faccessat(&dfd, &filename, &mode, NULL);
+#endif
 	const struct cred *old_cred;
 	struct cred *override_cred;
 	struct path path;
